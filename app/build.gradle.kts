@@ -1,9 +1,8 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-
     id ("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
@@ -35,11 +34,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
         freeCompilerArgs += "-Xallow-kotlin-package"
     }
     buildFeatures {
@@ -56,9 +55,17 @@ android {
 }
 
 dependencies {
+    val roomVersion = "2.6.1"
+    val daggerHiltVersion = "2.49"
+    val retrofit2Version = "2.9.0"
+    val okHttpVersion = "4.12.0"
+    val kotlinxSerializationVersion = "1.2.1"
+    val coilVersion = "2.5.0"
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
@@ -74,14 +81,30 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.49")
-    implementation("com.google.dagger:hilt-compiler:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:$daggerHiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$daggerHiltVersion")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
 
+    // Retrofit2
+    implementation ("com.squareup.retrofit2:retrofit:$retrofit2Version")
+    implementation ("com.squareup.retrofit2:converter-gson:$retrofit2Version")
+    implementation ("com.squareup.okhttp3:okhttp:$okHttpVersion")
+    implementation ("com.squareup.okhttp3:logging-interceptor:$okHttpVersion")
 
-    // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation ("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
+
+    // Room
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("androidx.room:room-paging:$roomVersion")
+
+    //serialization
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
+
+    //Coil
+    implementation ("io.coil-kt:coil-compose:$coilVersion")
+
+    // Paging3
+    implementation("androidx.paging:paging-compose:3.2.1")
 }
