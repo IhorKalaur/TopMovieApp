@@ -8,7 +8,4 @@ object Constants {
     const val BASE_IMAGE_URL_GOOD_QUALITY = "https://image.tmdb.org/t/p/w500"
 
     const val TMDB_DATABASE_NAME = "tmdb_database"
-
-    const val INITIAL_PAGE = 1
-
 }

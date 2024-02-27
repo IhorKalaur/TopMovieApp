@@ -1,6 +1,5 @@
 package ihor.kalaur.topmovieapp.di
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,6 +8,7 @@ import ihor.kalaur.topmovieapp.data.remote.TmdbApi
 import ihor.kalaur.topmovieapp.util.Constants.API_KEY
 import ihor.kalaur.topmovieapp.util.Constants.TMDB_API_BASE_URL
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -19,8 +19,13 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideTmdbApi() : TmdbApi {
-        fun getHttpClientWithInterceptor() : OkHttpClient{
+    fun provideTmdbApi(): TmdbApi {
+        fun getHttpClientWithInterceptor(): OkHttpClient {
+
+            val logging = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+
             return OkHttpClient.Builder()
                 .addInterceptor { chain ->
                     val original = chain.request()
@@ -36,6 +41,7 @@ object NetworkModule {
                     val request = requestBuilder.build()
                     chain.proceed(request)
                 }
+                .addInterceptor(logging)
                 .build()
         }
 

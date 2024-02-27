@@ -1,6 +1,5 @@
 package ihor.kalaur.topmovieapp.data.remote.response
 
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class MovieDto(
@@ -11,7 +10,7 @@ data class MovieDto(
     val movieName: String,
 
     @SerializedName("release_date")
-    val dateOfProduction: String,
+    var yearOfProduction: String,
 
     @SerializedName("poster_path")
     val partOfPosterUrl: String

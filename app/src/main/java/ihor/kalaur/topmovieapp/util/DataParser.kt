@@ -1,5 +1,7 @@
 package ihor.kalaur.topmovieapp.util
 
-class DataParser {
+import javax.inject.Inject
+
+class DataParser @Inject constructor(){
     fun parseYearFromResponse(str: String): String = str.substring(0,4)
 }

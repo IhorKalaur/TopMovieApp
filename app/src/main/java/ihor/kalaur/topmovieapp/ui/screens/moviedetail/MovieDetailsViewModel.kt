@@ -3,28 +3,28 @@ package ihor.kalaur.topmovieapp.ui.screens.moviedetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ihor.kalaur.topmovieapp.data.repository.MovieRepositoryImpl
-import ihor.kalaur.topmovieapp.model.MovieDetail
+import ihor.kalaur.topmovieapp.data.repository.MovieRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
-    private val repository: MovieRepositoryImpl
+    private val repository: MovieRepository
 ) : ViewModel() {
 
+    val movieDetailState = MutableStateFlow<MovieDetailState>(MovieDetailState.Loading)
 
-    private val _movieDetail = MutableStateFlow<MovieDetail?>(null)
-    val movieDetail: StateFlow<MovieDetail?> = _movieDetail.asStateFlow()
-
-    fun fetchMovieDetail(movieId: Int) {
+    fun fetchMovieDetail(movieId: String) {
         viewModelScope.launch {
-            _movieDetail.value = repository.getMovieDetail(movieId)
+            movieDetailState.value = MovieDetailState.Loading
+            try {
+                val movieDetail = repository.getMovieDetail(movieId)
+                movieDetailState.value = MovieDetailState.Success(movieDetail)
+            } catch (e: Exception) {
+                movieDetailState.value = MovieDetailState.Error(e.message ?: "Unknown Error")
+            }
         }
     }
-
 
 }

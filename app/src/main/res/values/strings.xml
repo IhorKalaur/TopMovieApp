@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TopMovieApp</string>
+    <string name="unknown_message">"Unknown"</string>
+    <string name="refresh_error_message">"Data update error, check network access"</string>
+    <string name="download_data_error_message">""Error loading data, check network access"</string>
+    <string name="downloading_message">Downloading…</string>
 </resources>
